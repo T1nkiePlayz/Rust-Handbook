@@ -539,10 +539,240 @@ html[data-theme="light"] .hero-quote{background:rgba(255,255,255,.62)}
   display:none;align-items:center;justify-content:space-between;width:100%;gap:.72rem;
   background:none;border:0;color:var(--text);font-size:.925rem;font-weight:680;cursor:pointer;padding:.25rem 0;font-family:var(--font-sans);
 }
+
+/* ============================================================
+   POLISH & ANIMATIONS
+   ============================================================ */
+
+/* --- smooth theme switching on major surfaces --- */
+body,.callout,.pill,.toc a,.toc,.hstat,.hero-quote,.tbl-wrap,table,th,td,.chart,
+.diag,.mem-col,.mem-box,.state,.flow-step,.gl,.stat-strip .s,details,.code-bar,
+.footer,.btn-ghost,.toc-tools button,.kbd,.legend-dot{
+  transition:background-color .45s ease,border-color .45s ease,color .45s ease,box-shadow .45s ease;
+}
+.card{transition:transform .3s cubic-bezier(.2,.7,.3,1),border-color .3s,box-shadow .3s,background-color .45s ease}
+
+/* --- global scrollbar --- */
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--bg-soft)}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px;border:2px solid var(--bg-soft)}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+html{scrollbar-width:thin;scrollbar-color:var(--line) var(--bg-soft)}
+
+/* --- keyboard focus --- */
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+
+/* --- keyframes --- */
+@keyframes heroIn{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes floaty{0%,100%{translate:0 0}50%{translate:0 -12px}}
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes gridDrift{to{background-position:52px 52px,52px 52px}}
+@keyframes emberRise{
+  0%{transform:translateY(0) translateX(0) scale(.6);opacity:0}
+  12%{opacity:.9}
+  70%{opacity:.55}
+  100%{transform:translateY(-96vh) translateX(var(--drift,30px)) scale(1.1);opacity:0}
+}
+@keyframes shine{to{left:130%}}
+@keyframes copyPop{0%{transform:scale(1)}40%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes dotBounce{0%,100%{transform:translateY(0)}45%{transform:translateY(-4px)}}
+@keyframes shimmer{0%{transform:translateX(-110%)}60%,100%{transform:translateX(210%)}}
+@keyframes dotPop{0%{transform:scale(0)}70%{transform:scale(1.3)}100%{transform:scale(1)}}
+@keyframes growLine{from{width:0}to{width:26px}}
+@keyframes ping{0%{transform:scale(.75);opacity:.85}80%,100%{transform:scale(2.2);opacity:0}}
+@keyframes memPulse{0%,100%{box-shadow:0 0 0 0 rgba(249,115,22,0)}50%{box-shadow:0 0 15px 0 rgba(249,115,22,.35)}}
+@keyframes arrowNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+@keyframes topIn{from{opacity:0;transform:translateY(16px) scale(.6)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes tocIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@keyframes progShift{to{background-position:200% 0}}
+
+/* --- progress bar: glow + moving sheen --- */
+#progress{background-size:200% 100%;animation:progShift 3.4s linear infinite;box-shadow:0 0 10px rgba(249,115,22,.55)}
+
+/* --- back-to-top: springy entrance + hover --- */
+#toTop{transition:opacity .3s,transform .45s cubic-bezier(.34,1.56,.64,1),background .2s}
+#toTop.show{animation:topIn .5s cubic-bezier(.34,1.56,.64,1)}
+#toTop:hover{transform:translateY(-3px) scale(1.09);background:var(--accent-2)}
+
+/* --- hero: noise, embers, entrance choreography --- */
+.noise{
+  position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.42;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+}
+html[data-theme="light"] .noise{opacity:.25}
+.embers{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.ember{
+  position:absolute;bottom:-16px;border-radius:50%;opacity:0;
+  background:radial-gradient(circle,#fde68a 0%,#f97316 55%,rgba(249,115,22,0) 72%);
+  animation:emberRise linear infinite;
+}
+.hero::after{animation:gridDrift 26s linear infinite}
+.hero-inner>*{animation:heroIn .95s cubic-bezier(.2,.7,.3,1) both}
+.hero-inner>*:nth-child(2){animation-delay:.14s}
+.hero-inner>*:nth-child(3){animation-delay:.26s}
+.hero-inner>*:nth-child(4){animation-delay:.38s}
+.hero-inner>*:nth-child(5){animation-delay:.5s}
+.hero-inner>*:nth-child(6){animation-delay:.62s}
+.hero-inner>*:nth-child(7){animation-delay:.78s}
+.hero-mark{animation:heroIn .95s cubic-bezier(.2,.7,.3,1) .04s both,floaty 7s ease-in-out 1.4s infinite}
+.hero h1 .grad{
+  background:linear-gradient(100deg,var(--accent),var(--accent-2) 35%,var(--pink) 55%,var(--accent-2) 75%,var(--accent));
+  background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:gradShift 9s ease-in-out infinite;
+}
+.kicker{animation:heroIn .95s cubic-bezier(.2,.7,.3,1) .14s both}
+.btn-primary{position:relative;overflow:hidden}
+.btn-primary::after{
+  content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.42),transparent);
+  transform:skewX(-20deg);transition:left .65s ease;
+}
+.btn-primary:hover::after{left:130%}
+.hero-stats .hstat{animation:heroIn .95s cubic-bezier(.2,.7,.3,1) both;transition:transform .3s cubic-bezier(.2,.7,.3,1),border-color .3s,box-shadow .3s,background-color .45s}
+.hero-stats .hstat:nth-child(1){animation-delay:.66s}
+.hero-stats .hstat:nth-child(2){animation-delay:.74s}
+.hero-stats .hstat:nth-child(3){animation-delay:.82s}
+.hero-stats .hstat:nth-child(4){animation-delay:.9s}
+.hstat:hover{transform:translateY(-4px);border-color:rgba(249,115,22,.5);box-shadow:0 14px 32px rgba(0,0,0,.28)}
+.hero-quote{transition:border-color .3s,box-shadow .3s,background-color .45s}
+.hero-quote:hover{border-color:var(--accent);box-shadow:0 14px 34px rgba(0,0,0,.22)}
+
+/* --- section heads: sweeping underline + growing tick --- */
+.sec-head::after{
+  content:"";position:absolute;left:0;bottom:-1px;height:2px;width:100%;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2),transparent);
+  transform:scaleX(0);transform-origin:left;transition:transform 1s cubic-bezier(.2,.7,.3,1) .18s;
+}
+.sec-head.in::after{transform:scaleX(1)}
+.sec-head.in .sec-num::before{animation:growLine .8s cubic-bezier(.2,.7,.3,1) .3s backwards}
+.sec-num::before{transition:width .3s}
+
+/* --- TOC: entrance stagger + hover slide + active pop --- */
+.toc-list a{animation:tocIn .55s cubic-bezier(.2,.7,.3,1) both}
+.toc a{transition:color .16s,background .16s,border-color .16s,transform .25s cubic-bezier(.2,.7,.3,1)}
+.toc a:hover{transform:translateX(3px)}
+.toc a .num{transition:transform .35s cubic-bezier(.34,1.56,.64,1),color .16s}
+.toc a.active .num{transform:scale(1.22)}
+
+/* --- cards: cursor spotlight + icon play --- */
+.card{position:relative;overflow:hidden}
+.card::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .35s;
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(249,115,22,.13),transparent 62%);
+}
+.card:hover::before{opacity:1}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 44px rgba(0,0,0,.3)}
+.card .ico{transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.card:hover .ico{transform:translateY(-3px) rotate(-7deg) scale(1.1)}
+
+/* --- callouts: gentle hover lift --- */
+.callout{transition:transform .3s,box-shadow .3s,border-color .3s,background-color .45s}
+.callout:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(0,0,0,.2)}
+
+/* --- pills: pop on hover --- */
+.pill{transition:transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .28s,background-color .3s,border-color .3s,color .3s}
+.pill:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.22)}
+
+/* --- code blocks: hover glow, playful dots, copy pop --- */
+.code{transition:border-color .3s,box-shadow .3s,background-color .45s}
+.code:hover{border-color:rgba(249,115,22,.35);box-shadow:0 14px 36px rgba(0,0,0,.3)}
+.code:hover .dots i{animation:dotBounce .65s ease}
+.code:hover .dots i:nth-child(2){animation-delay:.09s}
+.code:hover .dots i:nth-child(3){animation-delay:.18s}
+.copy.done{animation:copyPop .5s cubic-bezier(.34,1.56,.64,1)}
+
+/* --- bar charts: staggered fills + sweeping highlight + value fade --- */
+.bar-fill{position:relative;overflow:hidden}
+.chart.in .bar-fill::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 32%,rgba(255,255,255,.38) 50%,transparent 68%);
+  animation:shimmer 3s cubic-bezier(.4,0,.2,1) 1.15s infinite;
+}
+.bar-val{opacity:0;transform:translateX(8px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.3,1)}
+.chart.in .bar-val{opacity:1;transform:none}
+
+/* --- quadrant: staggered dot entrance + Rust ping --- */
+.q-dot{opacity:0;transform:translate(-50%,-50%) scale(.5);transition:opacity .55s ease,transform .55s cubic-bezier(.34,1.56,.64,1)}
+.quadrant.in .q-dot{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.quadrant.in .q-dot:nth-child(6){transition-delay:.05s}
+.quadrant.in .q-dot:nth-child(7){transition-delay:.1s}
+.quadrant.in .q-dot:nth-child(8){transition-delay:.15s}
+.quadrant.in .q-dot:nth-child(9){transition-delay:.2s}
+.quadrant.in .q-dot:nth-child(10){transition-delay:.25s}
+.quadrant.in .q-dot:nth-child(11){transition-delay:.3s}
+.quadrant.in .q-dot:nth-child(12){transition-delay:.35s}
+.quadrant.in .q-dot:nth-child(13){transition-delay:.4s}
+.quadrant.in .q-dot:nth-child(14){transition-delay:.45s}
+.quadrant.in .q-dot:nth-child(15){transition-delay:.5s}
+.quadrant.in .q-dot:nth-child(16){transition-delay:.55s}
+.quadrant.in .q-dot:nth-child(17){transition-delay:.6s}
+.q-dot.rust .bead{position:relative}
+.q-dot.rust .bead::after{
+  content:"";position:absolute;inset:-4px;border-radius:50%;
+  border:2px solid var(--accent);animation:ping 2.4s cubic-bezier(0,0,.2,1) infinite;
+}
+
+/* --- timeline: drawing line, popping dots --- */
+.timeline::before{transform:scaleY(0);transform-origin:top center;transition:transform 1.7s cubic-bezier(.3,.8,.3,1) .15s}
+.timeline.in::before{transform:scaleY(1)}
+.tl-item::before{transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .3s}
+.tl-item:hover::before{transform:scale(1.25);box-shadow:0 0 0 6px rgba(249,115,22,.18)}
+.tl-item.in::before{animation:dotPop .6s cubic-bezier(.34,1.56,.64,1) .3s backwards}
+
+/* --- diagrams: pulsing highlight, hoverable steps & arrows --- */
+.mem-box.hl{animation:memPulse 3s ease-in-out infinite}
+.flow-step{transition:transform .3s,border-color .3s,box-shadow .3s,background-color .45s}
+.flow-step:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 12px 28px rgba(0,0,0,.2)}
+.flow:hover .flow-arrow{animation:arrowNudge 1.1s ease-in-out infinite}
+
+/* --- glossary + stat tiles: hover lift --- */
+.gl{transition:transform .28s,border-color .28s,box-shadow .28s,background-color .45s}
+.gl:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 10px 26px rgba(0,0,0,.18)}
+.stat-strip .s{transition:transform .3s cubic-bezier(.2,.7,.3,1),border-color .3s,box-shadow .3s,background-color .45s}
+.stat-strip .s:hover{transform:translateY(-3px);border-color:var(--accent-2);box-shadow:0 12px 28px rgba(0,0,0,.2)}
+
+/* --- details / quiz: animated open + accent glow --- */
+details summary{transition:background .18s,padding-left .28s cubic-bezier(.2,.7,.3,1)}
+details summary:hover{padding-left:1.45rem}
+details[open] .body{animation:slideDown .38s cubic-bezier(.2,.7,.3,1)}
+details.quiz-item{transition:border-color .3s,box-shadow .3s}
+details.quiz-item[open]{border-color:var(--accent);box-shadow:0 12px 30px rgba(249,115,22,.1)}
+
+/* --- mini-list items: checkmark pop on hover --- */
+.mini-list li::before{transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.mini-list li:hover::before{transform:scale(1.3)}
+
+/* --- footer: drifting aurora border --- */
+.footer{position:relative;overflow:hidden}
+.footer::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;opacity:.85;
+  background:linear-gradient(90deg,transparent,var(--accent),var(--accent-2),var(--pink),transparent);
+  background-size:200% 100%;animation:progShift 7s linear infinite;
+}
+
+/* --- theme cross-fade (View Transitions API) --- */
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+::view-transition-old(root){animation:vtFade .22s ease-out both}
+::view-transition-new(root){animation:vtFade .32s ease-in both}
+@keyframes vtFade{from{opacity:.25}to{opacity:1}}
+
+/* --- respect reduced motion --- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;scroll-behavior:auto !important;
+  }
+  .reveal{opacity:1 !important;transform:none !important}
+}
+
 @media print{
-  .toc,#toTop,#progress,.hero-cta,.copy{display:none !important}
+  .toc,#toTop,#progress,.hero-cta,.copy,.noise,.embers{display:none !important}
   body{background:#fff;color:#000}
   .section{page-break-inside:avoid}
+  .reveal,.bar-val,.q-dot{opacity:1 !important;transform:none !important}
+  .timeline::before,.sec-head::after{transform:none !important}
 }
 </style>
 </head>
@@ -555,6 +785,8 @@ html[data-theme="light"] .hero-quote{background:rgba(255,255,255,.62)}
      HERO
      ============================================================ -->
 <header class="hero">
+  <div class="noise" aria-hidden="true"></div>
+  <div class="embers" id="embers" aria-hidden="true"></div>
   <div class="hero-inner">
     <svg class="hero-mark" viewBox="0 0 120 120" aria-hidden="true">
       <defs>
@@ -714,7 +946,7 @@ html[data-theme="light"] .hero-quote{background:rgba(255,255,255,.62)}
     <div class="q-xlab">Performance &amp; hardware control</div>
     <div class="q-ylab">Safety &amp; abstraction</div>
 
-    <div class="q-dot" style="left:86%;top:84%"><div class="bead" style="background:#f97316"></div><div class="nm">Rust</div></div>
+    <div class="q-dot rust" style="left:86%;top:84%"><div class="bead" style="background:#f97316"></div><div class="nm">Rust</div></div>
     <div class="q-dot" style="left:73%;top:22%"><div class="bead" style="background:#60a5fa"></div><div class="nm">C++</div></div>
     <div class="q-dot" style="left:88%;top:15%"><div class="bead" style="background:#94a3b8"></div><div class="nm">C</div></div>
     <div class="q-dot" style="left:66%;top:70%"><div class="bead" style="background:#f472b6"></div><div class="nm">Zig</div></div>
@@ -4801,10 +5033,118 @@ pub(crate) fn helper() { }                      // crate-visible
    REVEAL ON SCROLL + BAR ANIMATION
    ============================================================ */
 (function(){
+  /* stagger cards inside grids for a cascading entrance */
+  document.querySelectorAll(".grid").forEach(g=>{
+    [...g.children].forEach((c,i)=>{
+      if(c.classList.contains("reveal")) c.style.transitionDelay = (i*80)+"ms";
+    });
+  });
+  /* stagger timeline items */
+  document.querySelectorAll(".timeline .tl-item").forEach((c,i)=>{
+    c.style.transitionDelay = (i*110)+"ms";
+  });
+  /* stagger bars + values within each chart */
+  document.querySelectorAll(".chart").forEach(chart=>{
+    chart.querySelectorAll(".bar-row").forEach((row,i)=>{
+      const fill = row.querySelector(".bar-fill");
+      const val  = row.querySelector(".bar-val");
+      if(fill) fill.style.transitionDelay = (i*110)+"ms";
+      if(val)  val.style.transitionDelay  = (i*110+350)+"ms";
+    });
+  });
+  /* stagger glossary tiles */
+  document.querySelectorAll(".glossary").forEach(g=>{
+    [...g.children].forEach((c,i)=>{ c.style.transitionDelay = (i*45)+"ms"; });
+  });
+
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }});
   }, {threshold:.12, rootMargin:"0px 0px -40px 0px"});
-  document.querySelectorAll(".reveal, .chart").forEach(el=>io.observe(el));
+  document.querySelectorAll(".reveal, .chart, .timeline").forEach(el=>io.observe(el));
+})();
+
+/* ============================================================
+   HERO: rising embers + subtle mouse parallax
+   ============================================================ */
+(function(){
+  const hero = document.querySelector(".hero");
+  const host = document.getElementById("embers");
+  const inner = document.querySelector(".hero-inner");
+  if(!hero) return;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if(host && !reduced){
+    const COUNT = window.innerWidth < 700 ? 14 : 26;
+    for(let i=0;i<COUNT;i++){
+      const e = document.createElement("span");
+      e.className = "ember";
+      const size = 2 + Math.random()*5;
+      e.style.width = e.style.height = size+"px";
+      e.style.left = (Math.random()*100)+"%";
+      e.style.setProperty("--drift", (Math.random()*120-60).toFixed(0)+"px");
+      e.style.animationDuration = (9 + Math.random()*11).toFixed(1)+"s";
+      e.style.animationDelay = (-Math.random()*18).toFixed(1)+"s";
+      host.appendChild(e);
+    }
+  }
+
+  if(!reduced && window.matchMedia("(pointer:fine)").matches){
+    let tx=0, ty=0, cx=0, cy=0, raf=null;
+    function loop(){
+      cx += (tx-cx)*.06; cy += (ty-cy)*.06;
+      if(inner) inner.style.transform = "translate("+(cx*-8).toFixed(2)+"px,"+(cy*-6).toFixed(2)+"px)";
+      raf = (Math.abs(tx-cx)>.001 || Math.abs(ty-cy)>.001) ? requestAnimationFrame(loop) : null;
+    }
+    hero.addEventListener("mousemove", ev=>{
+      const r = hero.getBoundingClientRect();
+      tx = (ev.clientX - r.left)/r.width  - .5;
+      ty = (ev.clientY - r.top )/r.height - .5;
+      if(!raf) raf = requestAnimationFrame(loop);
+    });
+    hero.addEventListener("mouseleave", ()=>{ tx=0; ty=0; if(!raf) raf=requestAnimationFrame(loop); });
+  }
+})();
+
+/* ============================================================
+   CARDS: cursor-following spotlight
+   ============================================================ */
+(function(){
+  if(!window.matchMedia("(pointer:fine)").matches) return;
+  document.querySelectorAll(".card").forEach(card=>{
+    card.addEventListener("mousemove", ev=>{
+      const r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", (ev.clientX-r.left)+"px");
+      card.style.setProperty("--my", (ev.clientY-r.top)+"px");
+    });
+  });
+})();
+
+/* ============================================================
+   COUNT-UP numbers (hero stats, stat strips)
+   ============================================================ */
+(function(){
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduced) return;
+  function animate(el){
+    const txt = el.textContent.trim();
+    const m = txt.match(/^(\D*)(\d+)(\D*)$/);
+    if(!m) return;
+    const target = parseInt(m[2],10);
+    if(target === 0) return;
+    const dur = 1200, t0 = performance.now();
+    function tick(now){
+      const p = Math.min(1,(now-t0)/dur);
+      const eased = 1 - Math.pow(1-p,3);
+      el.textContent = m[1] + Math.round(target*eased) + m[3];
+      if(p<1) requestAnimationFrame(tick);
+      else el.textContent = txt;
+    }
+    requestAnimationFrame(tick);
+  }
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ io.unobserve(e.target); animate(e.target); }});
+  }, {threshold:.6});
+  document.querySelectorAll(".hstat .n, .stat-strip .v").forEach(el=>io.observe(el));
 })();
 
 /* ============================================================
@@ -4857,10 +5197,23 @@ pub(crate) fn helper() { }                      // crate-visible
   const saved = localStorage.getItem("rust-handbook-theme");
   if(saved) root.setAttribute("data-theme", saved);
   const btn = document.getElementById("themeBtn");
-  btn.addEventListener("click", ()=>{
+
+  function toggleTheme(){
     const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
-    root.setAttribute("data-theme", next);
+    /* cross-fade the whole page when the View Transitions API is available */
+    if(document.startViewTransition && !window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+      document.startViewTransition(()=>root.setAttribute("data-theme", next));
+    } else {
+      root.setAttribute("data-theme", next);
+    }
     localStorage.setItem("rust-handbook-theme", next);
+  }
+  btn.addEventListener("click", toggleTheme);
+  /* keyboard shortcut: press "t" to toggle theme */
+  window.addEventListener("keydown", e=>{
+    if(e.key === "t" && !e.metaKey && !e.ctrlKey && !e.altKey && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)){
+      toggleTheme();
+    }
   });
 
   const exp = document.getElementById("expandBtn");
